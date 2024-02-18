@@ -1,7 +1,7 @@
 import pybullet as p
 import pyrosim.pyrosim as pyrosim
 import numpy as np
-import pybullet_data, time
+import pybullet_data, time, math, random
 
 physicsClient = p.connect(p.GUI)
 p.setAdditionalSearchPath(pybullet_data.getDataPath())
@@ -13,23 +13,35 @@ p.loadSDF("world.sdf")
 
 pyrosim.Prepare_To_Simulate(robotId)
 
-backLegSensorValues = np.zeros(100)
-frontLegSensorValues = np.zeros(100)
+backLegSensorValues = np.zeros(1000)
+frontLegSensorValues = np.zeros(1000)
 
-for _ in range(100):
+targetAngles = np.linspace(-math.pi/4, math.pi/4, 1000)
+np.save('data/motorVals.npy', targetAngles)
+exit()
+
+for _ in range(1000):
+    # save each touch sensor value for the back and front legs
     backLegSensorValues[_] = pyrosim.Get_Touch_Sensor_Value_For_Link('BackLeg')
     frontLegSensorValues[_] = pyrosim.Get_Touch_Sensor_Value_For_Link('FrontLeg')
+
+    # create motors for front and back legs
+    pyrosim.Set_Motor_For_Joint(bodyIndex = robotId, jointName = 'Torso_BackLeg',
+                                controlMode = p.POSITION_CONTROL,
+                                targetPosition = targetAngles[_],
+                                maxForce = 50)
+    
+    pyrosim.Set_Motor_For_Joint(bodyIndex = robotId, jointName = 'Torso_FrontLeg',
+                                controlMode = p.POSITION_CONTROL,
+                                targetPosition = targetAngles[_],
+                                maxForce = 50)
+    
     p.stepSimulation()
     time.sleep(.016)
 
-with open('data/backLegSensorVals.npy', 'wb') as blf:
-    np.save(blf, backLegSensorValues)
-
-with open('data/frontLegSensorVals.npy', 'wb') as flf:
-    np.save(flf, frontLegSensorValues) 
+# save back and front leg touch sensor values ot their respective files
+np.save('data/backLegSensorVals.npy', backLegSensorValues)
+np.save('data/frontLegSensorVals.npy', frontLegSensorValues)
 
 p.disconnect()
-
-print(backLegSensorValues)
-print(frontLegSensorValues)
 
