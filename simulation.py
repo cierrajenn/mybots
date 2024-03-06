@@ -13,12 +13,15 @@ class SIMULATION:
         p.setAdditionalSearchPath(pybullet_data.getDataPath())
         self.robot = ROBOT()
         self.world = WORLD()
+        self.robot.prepare_to_sense()
+        self.robot.prepare_to_act()
         
         p.setGravity(0, 0, -9.8)
 
     def run(self):
        for i in range(c.iters):
             self.robot.sense(i)
+            self.robot.think()
             self.robot.act(i)
             time.sleep(.00042)
                 
