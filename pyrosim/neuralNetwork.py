@@ -33,11 +33,12 @@ class NEURAL_NETWORK:
     def Update(self):
         for i in self.neurons.values():
             neuronName = i.Get_Name()
-            # where am i getting neuronName from
+            
             if self.neurons[neuronName].Is_Sensor_Neuron():
                 self.neurons[neuronName].Update_Sensor_Neuron()
+                
             else:
-                self.neurons[neuronName].Update_Hidden_Or_Motor_Neuron()
+                self.neurons[neuronName].Update_Hidden_Or_Motor_Neuron(self.neurons, self.synapses)
 
     def Get_Neuron_Names(self):
         return self.neurons.keys()
@@ -62,7 +63,7 @@ class NEURAL_NETWORK:
         self.neurons[ neuron.Get_Name() ] = neuron
 
     def Add_Synapse_According_To(self,line):
-
+  
         synapse = SYNAPSE(line)
 
         sourceNeuronName = synapse.Get_Source_Neuron_Name()
