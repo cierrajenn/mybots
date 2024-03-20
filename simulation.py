@@ -20,11 +20,11 @@ class SIMULATION:
 
     def run(self):
        for i in range(c.iters):
+            p.stepSimulation()
             self.robot.sense(i)
             self.robot.think()
             self.robot.act(i)
-            time.sleep(.00042)
-                
+            time.sleep(.00042)                
 
     def __del__(self):
         p.disconnect()
