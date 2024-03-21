@@ -34,10 +34,10 @@ class ROBOT:
             if self.nn.Is_Motor_Neuron(neuronName):
                 self.jointName = self.nn.Get_Motor_Neurons_Joint(neuronName)
                 self.desiredAngle = self.nn.Get_Value_Of(neuronName)
-                
-                #self.motors[bytes(self.jointName, 'ASCII')].setValue(self.robotId, self.desiredAngle)
-                for motor in self.motors.values():
-                    motor.setValue(self.robotId, self.desiredAngle)
+                print("desired angle is: " + str(self.desiredAngle))
+                self.motors[self.jointName].setValue(self.robotId, self.desiredAngle)
+                #for motor in self.motors.values():
+                    #motor.setValue(self.robotId, self.desiredAngle)
 
 
     def think(self):

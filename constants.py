@@ -8,6 +8,6 @@ phaseOffset = -np.pi/2
 ##flFrequency = 0.08
 ##flPhaseOffset = 0
 
-iters = 1000
+iters = 10000
 
 force = 50

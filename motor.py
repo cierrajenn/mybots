@@ -13,14 +13,13 @@ class MOTOR:
 
     def prepare_to_act(self):   
         if self.jointName == 'Torso_BackLeg':
-            self.amplitude = c.amplitude
+            self.amplitude = c.amplitude/3
             self.frequency = c.frequency
             self.phaseOffset = c.phaseOffset
         else:
             self.amplitude = c.amplitude
             self.frequency = c.frequency
-            self.phaseOffset = c.phaseOffset/3
-            self.frequency = c.frequency/3
+            self.phaseOffset = c.phaseOffset
             
         self.motorVals = self.amplitude * np.sin(self.frequency * self.x + self.phaseOffset)
 
