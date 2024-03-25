@@ -8,8 +8,12 @@ from world import WORLD
 from robot import ROBOT
 
 class SIMULATION:
-    def __init__(self):
-        self.physicsClient = p.connect(p.GUI)
+    def __init__(self, directOrGUI):
+        if directOrGUI == 'DIRECT':
+            self.physicsClient = p.connect(p.DIRECT)
+        else:
+            self.physicsClient = p.connect(p.GUI)
+        
         p.setAdditionalSearchPath(pybullet_data.getDataPath())
         self.robot = ROBOT()
         self.world = WORLD()
@@ -17,6 +21,9 @@ class SIMULATION:
         self.robot.prepare_to_act()
         
         p.setGravity(0, 0, -9.8)
+
+    def get_fitness(self):
+        self.robot.get_fitness()
 
     def run(self):
        for i in range(c.iters):

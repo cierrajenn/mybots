@@ -5,10 +5,16 @@ import numpy as np
 import pybullet_data, time, math, random
 import matplotlib.pyplot as plt
 
+import os, sys
+
 from simulation import SIMULATION
 
-simulation = SIMULATION()
+directOrGUI = sys.argv[1]
+
+simulation = SIMULATION(directOrGUI)
 simulation.run()
+simulation.get_fitness()
+
 
 ##
 ### save back and front leg touch sensor values ot their respective files
