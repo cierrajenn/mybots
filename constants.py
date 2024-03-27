@@ -8,4 +8,6 @@ iters = 1000
 
 force = 50
 
-numberOfGenerations = 15
+numberOfGenerations = 10
+
+populationSize = 10

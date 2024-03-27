@@ -33,7 +33,7 @@ class HILL_CLIMBER():
         self.child.mutate()
 
     def select(self):
-        if self.child.fitness > self.parent.fitness:
+        if self.child.fitness < self.parent.fitness:
             self.parent = self.child
 
     def print(self):

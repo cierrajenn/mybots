@@ -1,9 +1,11 @@
 import numpy as np
 import pyrosim.pyrosim as pyrosim
-import os, random
+import os, random, time
 
 class SOLUTION():
-    def __init__(self):
+    def __init__(self, nextAvailableID):
+        self.myID = nextAvailableID
+        
         self.weights = np.random.rand(3,2)
         self.weights = self.weights * 2 - 1
 
@@ -31,7 +33,7 @@ class SOLUTION():
         pyrosim.End()
 
     def Generate_Brain(self):
-        pyrosim.Start_NeuralNetwork("brain.nndf")
+        pyrosim.Start_NeuralNetwork("brain" + str(self.myID) + ".nndf")
 
         pyrosim.Send_Sensor_Neuron(name = 0, linkName = "Torso")
         pyrosim.Send_Sensor_Neuron(name = 1, linkName = "BackLeg")
@@ -60,16 +62,27 @@ class SOLUTION():
 
         self.weights[randomRow][randomColumn] = random.random() * 2 - 1
 
-    def evaluate(self, directOrGUI):
+    def start_simulation(self, directOrGUI):
         self.Create_World()
         self.Generate_Body()
         self.Generate_Brain()
 
-        os.system("python3 simulate.py " + directOrGUI)
+        os.system("python3 simulate.py " + directOrGUI + " " + str(self.myID) + " &")
 
-        with open('fitness.txt', 'r') as f:
+    def wait_for_simulation_to_end(self):
+        self.fitnessFileName = 'fitness' + str(self.myID) + '.txt'
+
+        while not os.path.exists(self.fitnessFileName):
+            time.sleep(0.01)
+
+        with open(self.fitnessFileName, 'r') as f:
             for line in f:
                 self.fitness = float(line)
 
         f.close()
+
+        os.remove(self.fitnessFileName)
+
+    def set_ID(self):
+        pass
 

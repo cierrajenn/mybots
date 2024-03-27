@@ -8,14 +8,14 @@ from world import WORLD
 from robot import ROBOT
 
 class SIMULATION:
-    def __init__(self, directOrGUI):
+    def __init__(self, directOrGUI, solutionID):
         if directOrGUI == 'DIRECT':
             self.physicsClient = p.connect(p.DIRECT)
         else:
             self.physicsClient = p.connect(p.GUI)
         
         p.setAdditionalSearchPath(pybullet_data.getDataPath())
-        self.robot = ROBOT()
+        self.robot = ROBOT(solutionID)
         self.world = WORLD()
         self.robot.prepare_to_sense()
         self.robot.prepare_to_act()
